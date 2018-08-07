@@ -1,0 +1,7 @@
+<ul class="items">
+  <li *ngFor="let ap of actionPoints$ | async" [class.selected]="ap.id === selectedId">
+    <a [routerLink]="[ap.id]">
+      <span class="badge">{{ ap.id }}</span>{{ ap.name }}
+    </a>
+  </li>
+</ul>
