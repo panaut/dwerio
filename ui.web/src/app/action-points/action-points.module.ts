@@ -6,11 +6,13 @@ import { ActionPointsDetailComponent } from './action-points-detail/action-point
 import { ActionPointsService } from './action-points.service';
 import { ActionPointsListComponent } from './action-points-list/action-points-list.component';
 import { ActionPointResolverService } from './action-point-resolver.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
-    ActionPointsRouterModule
+    ActionPointsRouterModule,
+    FormsModule
   ],
   declarations: [
     ActionPointsHomeComponent,
