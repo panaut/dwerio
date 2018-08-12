@@ -1,0 +1,7 @@
+<ul class="items">
+    <li *ngFor="let ua of _userAccounts$ | async" [class.selected]="ua.id === selectedId">
+      <a [routerLink]="[ua.id]">
+        <span class="badge">{{ ua.id }}</span>{{ ua.username }}
+      </a>
+    </li>
+  </ul>

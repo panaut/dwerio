@@ -1,4 +1,6 @@
 export class PersonalAccount {
-    public _id: number;
-    public _username: string;
+    public id: number;
+    public username: string;
+    public phoneNumber: string;
+    public fullName: string;
 }

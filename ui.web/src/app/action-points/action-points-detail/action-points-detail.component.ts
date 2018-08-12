@@ -5,7 +5,7 @@ import { ActionPoint, GeoCoordinates, Address } from '../../model';
 @Component({
   selector: 'app-action-points-detail',
   templateUrl: './action-points-detail.component.html',
-  styleUrls: ['./action-points-detail.component.css']
+  styleUrls: ['../../../../node_modules/bootstrap/dist/css/bootstrap.min.css']
 })
 export class ActionPointsDetailComponent implements OnInit {
 
@@ -48,7 +48,7 @@ export class ActionPointsDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router
-  ) {  }
+  ) { }
 
   ngOnInit() {
     this.route.data
@@ -66,6 +66,14 @@ export class ActionPointsDetailComponent implements OnInit {
   }
 
   public goToList() {
+    if (!this._showAddress) {
+      this._actionPoint.address = null;
+    }
+
+    if (!this._showGeoLocation) {
+      this._actionPoint.geoLocation = null;
+    }
+
     // this.router.navigate(['/ap', { ationPointId: this._actionPoint.id }]);
     this.router.navigate(['/ap']);
   }

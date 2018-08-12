@@ -42,7 +42,7 @@
         <label for="zip" class="col-sm-2">ZIP Code</label>
         <div class="col-sm-2">
           <input type="text" maxlength="5" name="Zip" class="form-control" id="zip" required=true [(ngModel)]="_actionPoint.address.zip"
-          #adZip="ngModel" />
+            #adZip="ngModel" />
           <div [hidden]="adZip.valid || adZip.pristine" class="alert alert-danger">
             ZIP Code is required
           </div>
@@ -50,8 +50,8 @@
 
         <label for="city" class="col-sm-2">City</label>
         <div class="col-sm-6">
-          <input type="text" name="City" class="form-control" id="city" required=true [(ngModel)]="_actionPoint.address.city"
-          #adCity="ngModel" />
+          <input type="text" name="City" class="form-control" id="city" required=true [(ngModel)]="_actionPoint.address.city" #adCity="ngModel"
+          />
           <div [hidden]="adCity.valid || adCity.pristine" class="alert alert-danger">
             City is required
           </div>
@@ -69,7 +69,7 @@
         <label for="longitude" class="col-sm-2">Longitude</label>
         <div class="col-sm-2">
           <input type="text" name="Longitude" class="form-control" id="longitude" required=true [(ngModel)]="_actionPoint.geoLocation.longitude"
-          #glLon="ngModel" />
+            #glLon="ngModel" />
           <div [hidden]="glLon.valid || glLon.pristine" class="alert alert-danger">
             Longitude is required
           </div>
@@ -78,7 +78,7 @@
         <label for="latitude" class="col-sm-2">Longitude</label>
         <div class="col-sm-2">
           <input type="text" name="Latitude" class="form-control" id="latitude" required=true [(ngModel)]="_actionPoint.geoLocation.latitude"
-          #glLat="ngModel" />
+            #glLat="ngModel" />
           <div [hidden]="glLat.valid || glLat.pristine" class="alert alert-danger">
             Latitude is required
           </div>
@@ -87,6 +87,6 @@
     </ng-container>
 
     <button type="submit" class="btn btn-primary">Submit</button>
-    <button class="btn" (click)="goToList()">Back</button>
+    <button class="btn btn-default" (click)="goToList()">Back</button>
   </form>
 </div>
