@@ -1,7 +1,13 @@
 <ul class="items">
-  <li *ngFor="let ap of actionPoints$ | async" [class.selected]="ap.id === selectedId">
-    <a [routerLink]="[ap.id]">
-      <span class="badge">{{ ap.id }}</span>{{ ap.name }}
-    </a>
-  </li>
+  <ng-container *ngFor="let ap of actionPoints$ | async" [class.selected]="ap.id === selectedId">
+    <li>
+      <a [routerLink]="[ap.id]">
+        <span class="badge">{{ ap.id }}</span>{{ ap.name }}
+      </a>
+
+      <i class="tail fa fa-trash" (click)="removeItem(ap.id)"></i>
+    </li>
+  </ng-container>
 </ul>
+
+<button class="btn btn-default" (click)="addNewActionPoint()">Add...</button>

@@ -43,12 +43,21 @@ export class ActionPointsService {
     return this._actionPoints.find((actPoint: ActionPoint) => actPoint.id === id);
   }
 
-  public addActionPoint(name: string): void {
+  public createNewActionPoint(name: string): void {
     const ap = new ActionPoint();
     ap.id = this._actionId++;
     ap.name = name;
 
     this._actionPoints.push(ap);
+    this._actionPoints$.next(this._actionPoints);
+  }
+
+  public saveActionPoint(actionPoint: ActionPoint): void {
+    if (actionPoint.id) {
+      actionPoint.id = this._actionId++;
+    }
+
+    this._actionPoints.push(actionPoint);
     this._actionPoints$.next(this._actionPoints);
   }
 

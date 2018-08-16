@@ -1,6 +1,6 @@
 <div class="container">
   <h3>Action Point Details</h3>
-  <form #actionPointForm="ngForm">
+  <form #actionPointForm="ngForm" (ngSubmit)="onSubmit(actionPointForm)">
     <div class="form-group row">
       <label for="name" class="col-sm-2">Name</label>
       <div class="col-sm-10">
@@ -86,7 +86,7 @@
       </div>
     </ng-container>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" [disabled]="!actionPointForm.valid" class="btn btn-primary">Submit</button>
     <button class="btn btn-default" (click)="goToList()">Back</button>
   </form>
 </div>

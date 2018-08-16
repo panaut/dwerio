@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { ActionPoint, GeoCoordinates, Address } from '../../model';
+import { NgForm } from '@angular/forms';
+import { ActionPointsService } from '../action-points.service';
 
 @Component({
   selector: 'app-action-points-detail',
@@ -47,7 +49,8 @@ export class ActionPointsDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private apSvc: ActionPointsService
   ) { }
 
   ngOnInit() {
@@ -78,4 +81,9 @@ export class ActionPointsDetailComponent implements OnInit {
     this.router.navigate(['/ap']);
   }
 
+  public onSubmit(actionPointForm: NgForm): void {
+    if (actionPointForm.valid) {
+      this.apSvc.saveActionPoint(this._actionPoint);
+    }
+  }
 }
