@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActionPoint } from '../model';
+import { ActionPoint, Address, GeoCoordinates } from '../model';
 import { BehaviorSubject, Observable } from '../../../node_modules/rxjs';
 
 @Injectable({
@@ -23,11 +23,18 @@ export class ActionPointsService {
     ap.id = this._actionId++;
     ap.name = 'Algotech';
 
+    ap.address = new Address();
+    ap.address.street = 'Strada Mediteranea';
+
     this._actionPoints.push(ap);
 
     ap = new ActionPoint();
     ap.id = this._actionId++;
     ap.name = 'Computer Outfit';
+
+    ap.geoLocation = new GeoCoordinates();
+    ap.geoLocation.longitude = 40.40;
+    ap.geoLocation.latitude = 20.20;
 
     this._actionPoints.push(ap);
 
@@ -49,16 +56,13 @@ export class ActionPointsService {
     ap.name = name;
 
     this._actionPoints.push(ap);
-    this._actionPoints$.next(this._actionPoints);
   }
 
   public saveActionPoint(actionPoint: ActionPoint): void {
-    if (actionPoint.id) {
+    if (!actionPoint.id) {
       actionPoint.id = this._actionId++;
+      this._actionPoints.push(actionPoint);
     }
-
-    this._actionPoints.push(actionPoint);
-    this._actionPoints$.next(this._actionPoints);
   }
 
   public removeActionPoint(id: number): void {
@@ -66,7 +70,5 @@ export class ActionPointsService {
 
     const indexToDelete = this._actionPoints.indexOf(apTpDelete);
     this._actionPoints.splice(indexToDelete, 1);
-
-    this._actionPoints$.next(this._actionPoints);
   }
 }

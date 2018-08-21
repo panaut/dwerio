@@ -5,6 +5,7 @@ import { ActionPointsHomeComponent } from './action-points-home/action-points-ho
 import { ActionPointsDetailComponent } from './action-points-detail/action-points-detail.component';
 import { ActionPointsListComponent } from './action-points-list/action-points-list.component';
 import { ActionPointResolverService } from './action-point-resolver.service';
+import { CanDeactivateGuard } from './can-deactivate-guard';
 
 const actionPointsRoutes: Routes = [
   {
@@ -15,7 +16,10 @@ const actionPointsRoutes: Routes = [
       {
         path: ':id',
         component: ActionPointsDetailComponent,
-        resolve: { actionPoint: ActionPointResolverService }
+        resolve: {
+          actionPoint: ActionPointResolverService
+        },
+        canDeactivate: [CanDeactivateGuard]
       }
     ]
   }

@@ -1,12 +1,11 @@
 <div class="container">
   <h3>Action Point Details</h3>
-  <form #actionPointForm="ngForm" (ngSubmit)="onSubmit(actionPointForm)">
+  <form [formGroup]="actionPointForm" (ngSubmit)="onSubmit()">
     <div class="form-group row">
       <label for="name" class="col-sm-2">Name</label>
       <div class="col-sm-10">
-        <input type="text" name="Name" class="form-control" id="name" required=true [(ngModel)]="_actionPoint.name" #apName="ngModel"
-        />
-        <div [hidden]="apName.valid || apName.pristine" class="alert alert-danger">
+        <input type="text" class="form-control" id="name" formControlName="name" />
+        <div [hidden]="actionPointForm.controls['name'].valid || actionPointForm.controls['name'].pristine" class="alert alert-danger">
           Name is required
         </div>
       </div>
@@ -14,25 +13,26 @@
 
     <div class="form-group">
       <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name="Address" id="showAddressCB" [(ngModel)]="showAddress"> Show Address</label>
+        <input type="checkbox" class="form-check-input" id="showAddressCB" (click)="toggleAddress()" [checked]="_useAddress"> Show Address
+      </label>
     </div>
 
-    <ng-container *ngIf="showAddress">
+    <ng-container formGroupName="address" *ngIf="_useAddress">
       <div class="form-group row">
         <label for="street" class="col-sm-2">Street</label>
         <div class="col-sm-6">
-          <input type="text" name="Street" class="form-control" id="street" required=true [(ngModel)]="_actionPoint.address.street"
-            #adStreet="ngModel" />
-          <div [hidden]="adStreet.valid || adStreet.pristine" class="alert alert-danger">
+          <input type="text" formControlName="street" class="form-control" id="street" />
+          <div [hidden]="actionPointForm.controls['address'].controls['street'].valid || actionPointForm.controls['address'].controls['street'].pristine"
+            class="alert alert-danger">
             Street is required
           </div>
         </div>
 
         <label for="streetNumber" class="col-sm-2">Number</label>
         <div class="col-sm-2">
-          <input type="text" name="Number" class="form-control" id="streetNumber" required=true [(ngModel)]="_actionPoint.address.number"
-            #adNum="ngModel" />
-          <div [hidden]="adNum.valid || adNum.pristine" class="alert alert-danger">
+          <input type="text" formControlName="number" class="form-control" id="streetNumber" />
+          <div [hidden]="actionPointForm.controls['address'].controls['number'].valid || actionPointForm.controls['address'].controls['number'].pristine"
+            class="alert alert-danger">
             Street number is required
           </div>
         </div>
@@ -41,18 +41,18 @@
       <div class="form-group row">
         <label for="zip" class="col-sm-2">ZIP Code</label>
         <div class="col-sm-2">
-          <input type="text" maxlength="5" name="Zip" class="form-control" id="zip" required=true [(ngModel)]="_actionPoint.address.zip"
-            #adZip="ngModel" />
-          <div [hidden]="adZip.valid || adZip.pristine" class="alert alert-danger">
+          <input type="text" maxlength="5" formControlName="zip" class="form-control" id="zip" />
+          <div [hidden]="actionPointForm.controls['address'].controls['zip'].valid || actionPointForm.controls['address'].controls['zip'].pristine"
+            class="alert alert-danger">
             ZIP Code is required
           </div>
         </div>
 
         <label for="city" class="col-sm-2">City</label>
         <div class="col-sm-6">
-          <input type="text" name="City" class="form-control" id="city" required=true [(ngModel)]="_actionPoint.address.city" #adCity="ngModel"
-          />
-          <div [hidden]="adCity.valid || adCity.pristine" class="alert alert-danger">
+          <input type="text" formControlName="city" class="form-control" id="city" />
+          <div [hidden]="actionPointForm.controls['address'].controls['city'].valid || actionPointForm.controls['address'].controls['city'].pristine"
+            class="alert alert-danger">
             City is required
           </div>
         </div>
@@ -61,32 +61,33 @@
 
     <div class="form-group">
       <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name="Geo Coordinates" id="showGeoLocationCB" [(ngModel)]="showGeoLocation"> Show Geo Coordinates</label>
+        <input type="checkbox" class="form-check-input" id="showAddressCB" [checked]="_useGeoLocation" (click)="toggleLocation()"> Geo Coordinates
+      </label>
     </div>
 
-    <ng-container *ngIf="showGeoLocation">
+    <ng-container formGroupName="geoLocation" *ngIf="_useGeoLocation">
       <div class="form-group row">
         <label for="longitude" class="col-sm-2">Longitude</label>
         <div class="col-sm-2">
-          <input type="text" name="Longitude" class="form-control" id="longitude" required=true [(ngModel)]="_actionPoint.geoLocation.longitude"
-            #glLon="ngModel" />
-          <div [hidden]="glLon.valid || glLon.pristine" class="alert alert-danger">
+          <input type="text" formControlName="longitude" class="form-control" id="longitude" />
+          <div [hidden]="actionPointForm.controls['geoLocation'].controls['longitude'].valid || actionPointForm.controls['geoLocation'].controls['longitude'].pristine"
+            class="alert alert-danger">
             Longitude is required
           </div>
         </div>
 
         <label for="latitude" class="col-sm-2">Longitude</label>
         <div class="col-sm-2">
-          <input type="text" name="Latitude" class="form-control" id="latitude" required=true [(ngModel)]="_actionPoint.geoLocation.latitude"
-            #glLat="ngModel" />
-          <div [hidden]="glLat.valid || glLat.pristine" class="alert alert-danger">
-            Latitude is required
-          </div>
+          <input type="text" formControlName="latitude" class="form-control" id="latitude" />
+          <!-- <div [hidden]="glLat.valid || glLat.pristine" class="alert alert-danger">
+              Latitude is required
+            </div> -->
         </div>
       </div>
     </ng-container>
 
-    <button type="submit" [disabled]="!actionPointForm.valid" class="btn btn-primary">Submit</button>
-    <button class="btn btn-default" (click)="goToList()">Back</button>
+    <!-- <button type="submit" [disabled]="actionPointForm.pristine || !actionPointForm.valid" class="btn btn-primary">Submit</button>
+    <button class="btn btn-default" (click)="goToList()">Back</button> -->
+    <button type="submit" [disabled]="!actionPointForm.valid" class="btn btn-primary">Back</button>
   </form>
 </div>

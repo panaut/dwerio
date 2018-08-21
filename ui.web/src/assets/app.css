@@ -16,7 +16,7 @@
     border-radius: 4px;
   }
   .items li a {
-    display: block;
+    display: inline-block;
     text-decoration: none;
   }
   .items li:hover {

@@ -19,7 +19,7 @@ export class ActionPointsListComponent implements OnInit {
   }
 
   public addNewActionPoint(): void {
-    this.router.navigate(['/ap/-1']);
+    this.router.navigate(['/ap/new']);
   }
 
   public removeItem(actionPointId: number): void {

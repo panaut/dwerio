@@ -6,13 +6,15 @@ import { ActionPointsDetailComponent } from './action-points-detail/action-point
 import { ActionPointsService } from './action-points.service';
 import { ActionPointsListComponent } from './action-points-list/action-points-list.component';
 import { ActionPointResolverService } from './action-point-resolver.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CanDeactivateGuard } from './can-deactivate-guard';
 
 @NgModule({
   imports: [
     CommonModule,
     ActionPointsRouterModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ActionPointsHomeComponent,
@@ -21,7 +23,8 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [
     ActionPointsService,
-    ActionPointResolverService
+    ActionPointResolverService,
+    CanDeactivateGuard
   ]
 })
 export class ActionPointsModule { }
