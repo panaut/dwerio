@@ -10,7 +10,11 @@ export class CanDeactivateGuard implements CanDeactivate<ActionPointsDetailCompo
         currentRoute: ActivatedRouteSnapshot,
         currentState: RouterStateSnapshot,
         nextState?: RouterStateSnapshot): Observable<boolean> {
-        // return of(component.isValid);
-        return of(true);
+
+        if (!component.canDeactivate) {
+            component.showValidationErrors = true;
+        }
+
+        return of(component.canDeactivate);
     }
 }

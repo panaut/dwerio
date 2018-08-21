@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
+import {
+  ActivatedRoute,
+  Router
+} from '../../../../node_modules/@angular/router';
 import { ActionPoint, GeoCoordinates, Address } from '../../model';
-import { NgForm, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ActionPointsService } from '../action-points.service';
 
 @Component({
@@ -10,12 +13,41 @@ import { ActionPointsService } from '../action-points.service';
   styleUrls: ['../../../../node_modules/bootstrap/dist/css/bootstrap.min.css']
 })
 export class ActionPointsDetailComponent implements OnInit {
-  actionPointForm: FormGroup;
+  private actionPointForm: FormGroup;
 
   private _useAddress = false;
   private _useGeoLocation = false;
+  private _showValidationErrors = false;
+  private _submitted = false;
 
   private _actionPoint: ActionPoint;
+
+  public get canDeactivate(): boolean {
+    // return this.actionPointForm.pristine || this.actionPointForm.valid;
+    return !this.actionPointForm.touched || this._submitted;
+  }
+
+  public set showValidationErrors(value: boolean) {
+    this._showValidationErrors = value;
+  }
+
+  public get showValidationErrors(): boolean {
+    return this._showValidationErrors;
+  }
+
+  public validationErrorClass(field: string): { [key: string]: boolean } {
+    const path: string[] = field.split('.');
+
+    let formCtrl: AbstractControl = this.actionPointForm;
+
+    path.forEach((pathEl: string) => {
+      formCtrl = (<FormGroup>formCtrl).controls[pathEl];
+    });
+
+    const isInvalid: boolean = (this.showValidationErrors || !formCtrl.pristine) && !formCtrl.valid;
+
+    return { 'is-invalid': isInvalid };
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -57,10 +89,18 @@ export class ActionPointsDetailComponent implements OnInit {
         if (this._actionPoint.address) {
           this._useAddress = true;
 
-          (<FormGroup>this.actionPointForm.controls['address']).controls['street'].setValue(this._actionPoint.address.street);
-          (<FormGroup>this.actionPointForm.controls['address']).controls['number'].setValue(this._actionPoint.address.number);
-          (<FormGroup>this.actionPointForm.controls['address']).controls['zip'].setValue(this._actionPoint.address.zip);
-          (<FormGroup>this.actionPointForm.controls['address']).controls['city'].setValue(this._actionPoint.address.city);
+          (<FormGroup>this.actionPointForm.controls['address'])
+            .controls['street']
+            .setValue(this._actionPoint.address.street);
+          (<FormGroup>this.actionPointForm.controls['address'])
+            .controls['number']
+            .setValue(this._actionPoint.address.number);
+          (<FormGroup>this.actionPointForm.controls['address'])
+            .controls['zip']
+            .setValue(this._actionPoint.address.zip);
+          (<FormGroup>this.actionPointForm.controls['address'])
+            .controls['city']
+            .setValue(this._actionPoint.address.city);
         }
 
         if (this._actionPoint.geoLocation) {
@@ -69,14 +109,6 @@ export class ActionPointsDetailComponent implements OnInit {
           (<FormGroup>this.actionPointForm.controls['geoLocation']).controls['latitude'].setValue(this._actionPoint.geoLocation.latitude);
         }
       });
-  }
-
-  public onSubmit(actionPointForm: NgForm): void {
-    if (actionPointForm.valid) {
-      this.apSvc.saveActionPoint(this._actionPoint);
-    }
-
-    this.router.navigate(['/ap']);
   }
 
   private toggleAddress(): void {
@@ -106,7 +138,7 @@ export class ActionPointsDetailComponent implements OnInit {
       .controls['latitude']
       .updateValueAndValidity({ onlySelf: false, emitEvent: false });
 
-      console.log(this.actionPointForm.valid);
+    console.log(this.actionPointForm.valid);
   }
 
   private validateAddressField(control: AbstractControl) {
@@ -123,5 +155,40 @@ export class ActionPointsDetailComponent implements OnInit {
     }
 
     return null;
+  }
+
+  public onSubmit(): void {
+    if (this.actionPointForm.valid) {
+      this._actionPoint.name = this.actionPointForm.controls['name'].value;
+      if (!this._useAddress) {
+        this._actionPoint.address = null;
+      } else {
+        if (!this._actionPoint.address) {
+          this._actionPoint.address = new Address();
+        }
+
+        this._actionPoint.address.street = (<FormGroup>this.actionPointForm.controls['address']).controls['street'].value;
+        this._actionPoint.address.number = (<FormGroup>this.actionPointForm.controls['address']).controls['number'].value;
+        this._actionPoint.address.zip = (<FormGroup>this.actionPointForm.controls['address']).controls['zip'].value;
+        this._actionPoint.address.city = (<FormGroup>this.actionPointForm.controls['address']).controls['city'].value;
+      }
+
+      if (!this._useGeoLocation) {
+        this._actionPoint.geoLocation = null;
+      } else {
+        if (!this._actionPoint.geoLocation) {
+          this._actionPoint.geoLocation = new GeoCoordinates();
+        }
+
+        this._actionPoint.geoLocation.longitude = (<FormGroup>this.actionPointForm.controls['geoLocation']).controls['longitude'].value;
+        this._actionPoint.geoLocation.latitude = (<FormGroup>this.actionPointForm.controls['geoLocation']).controls['latitude'].value;
+      }
+
+      this.apSvc.saveActionPoint(this._actionPoint);
+
+      this._submitted = true;
+
+      this.router.navigate(['/ap']);
+    }
   }
 }

@@ -4,16 +4,14 @@
     <div class="form-group row">
       <label for="name" class="col-sm-2">Name</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="name" formControlName="name" />
-        <div [hidden]="actionPointForm.controls['name'].valid || actionPointForm.controls['name'].pristine" class="alert alert-danger">
-          Name is required
-        </div>
+        <input type="text" class="form-control" [ngClass]="validationErrorClass('name')" id="name" formControlName="name" />
       </div>
     </div>
 
     <div class="form-group">
       <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" id="showAddressCB" (click)="toggleAddress()" [checked]="_useAddress"> Show Address
+        <input type="checkbox" class="form-check-input" id="showAddressCB" (click)="toggleAddress()" [checked]="_useAddress">        Show
+        Address
       </label>
     </div>
 
@@ -21,47 +19,32 @@
       <div class="form-group row">
         <label for="street" class="col-sm-2">Street</label>
         <div class="col-sm-6">
-          <input type="text" formControlName="street" class="form-control" id="street" />
-          <div [hidden]="actionPointForm.controls['address'].controls['street'].valid || actionPointForm.controls['address'].controls['street'].pristine"
-            class="alert alert-danger">
-            Street is required
-          </div>
+          <input type="text" formControlName="street" class="form-control" [ngClass]="validationErrorClass('address.street')" id="street" />
         </div>
 
         <label for="streetNumber" class="col-sm-2">Number</label>
         <div class="col-sm-2">
-          <input type="text" formControlName="number" class="form-control" id="streetNumber" />
-          <div [hidden]="actionPointForm.controls['address'].controls['number'].valid || actionPointForm.controls['address'].controls['number'].pristine"
-            class="alert alert-danger">
-            Street number is required
-          </div>
+          <input type="text" formControlName="number" class="form-control" [ngClass]="validationErrorClass('address.number')" id="streetNumber" />
         </div>
       </div>
 
       <div class="form-group row">
         <label for="zip" class="col-sm-2">ZIP Code</label>
         <div class="col-sm-2">
-          <input type="text" maxlength="5" formControlName="zip" class="form-control" id="zip" />
-          <div [hidden]="actionPointForm.controls['address'].controls['zip'].valid || actionPointForm.controls['address'].controls['zip'].pristine"
-            class="alert alert-danger">
-            ZIP Code is required
-          </div>
+          <input type="text" maxlength="5" formControlName="zip" class="form-control" [ngClass]="validationErrorClass('address.zip')" id="zip" />
         </div>
 
         <label for="city" class="col-sm-2">City</label>
         <div class="col-sm-6">
-          <input type="text" formControlName="city" class="form-control" id="city" />
-          <div [hidden]="actionPointForm.controls['address'].controls['city'].valid || actionPointForm.controls['address'].controls['city'].pristine"
-            class="alert alert-danger">
-            City is required
-          </div>
+          <input type="text" formControlName="city" class="form-control" [ngClass]="validationErrorClass('address.city')" id="city" />
         </div>
       </div>
     </ng-container>
 
     <div class="form-group">
       <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" id="showAddressCB" [checked]="_useGeoLocation" (click)="toggleLocation()"> Geo Coordinates
+        <input type="checkbox" class="form-check-input" id="showAddressCB" [checked]="_useGeoLocation" (click)="toggleLocation()">        Geo
+        Coordinates
       </label>
     </div>
 
@@ -69,25 +52,16 @@
       <div class="form-group row">
         <label for="longitude" class="col-sm-2">Longitude</label>
         <div class="col-sm-2">
-          <input type="text" formControlName="longitude" class="form-control" id="longitude" />
-          <div [hidden]="actionPointForm.controls['geoLocation'].controls['longitude'].valid || actionPointForm.controls['geoLocation'].controls['longitude'].pristine"
-            class="alert alert-danger">
-            Longitude is required
-          </div>
+          <input type="text" formControlName="longitude" class="form-control" [ngClass]="validationErrorClass('geoLocation.longitude')" id="longitude" />
         </div>
 
         <label for="latitude" class="col-sm-2">Longitude</label>
         <div class="col-sm-2">
-          <input type="text" formControlName="latitude" class="form-control" id="latitude" />
-          <!-- <div [hidden]="glLat.valid || glLat.pristine" class="alert alert-danger">
-              Latitude is required
-            </div> -->
+          <input type="text" formControlName="latitude" class="form-control" [ngClass]="validationErrorClass('geoLocation.latitude')" id="latitude" />
         </div>
       </div>
     </ng-container>
 
-    <!-- <button type="submit" [disabled]="actionPointForm.pristine || !actionPointForm.valid" class="btn btn-primary">Submit</button>
-    <button class="btn btn-default" (click)="goToList()">Back</button> -->
     <button type="submit" [disabled]="!actionPointForm.valid" class="btn btn-primary">Back</button>
   </form>
 </div>
