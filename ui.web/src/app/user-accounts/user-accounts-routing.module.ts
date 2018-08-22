@@ -4,6 +4,7 @@ import { UserAccountsHomeComponent } from './user-accounts-home/user-accounts-ho
 import { UserAccountDetailsComponent } from './user-account-details/user-account-details.component';
 import { UserAccountsListComponent } from './user-accounts-list/user-accounts-list.component';
 import { UserAccountsResolverService } from './user-accounts-resolver.service';
+import { CanDeactivateGuard } from './can-deactivate-guard';
 
 const routes: Routes = [{
   path: '',
@@ -13,7 +14,8 @@ const routes: Routes = [{
     {
       path: ':id',
       component: UserAccountDetailsComponent,
-      resolve: { userAccount: UserAccountsResolverService }
+      resolve: { userAccount: UserAccountsResolverService },
+      canDeactivate: [CanDeactivateGuard]
     }
   ]
 }

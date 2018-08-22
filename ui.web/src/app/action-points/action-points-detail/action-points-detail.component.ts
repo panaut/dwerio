@@ -105,8 +105,12 @@ export class ActionPointsDetailComponent implements OnInit {
 
         if (this._actionPoint.geoLocation) {
           this._useGeoLocation = true;
-          (<FormGroup>this.actionPointForm.controls['geoLocation']).controls['longitude'].setValue(this._actionPoint.geoLocation.longitude);
-          (<FormGroup>this.actionPointForm.controls['geoLocation']).controls['latitude'].setValue(this._actionPoint.geoLocation.latitude);
+          (<FormGroup>this.actionPointForm.controls['geoLocation'])
+            .controls['longitude']
+            .setValue(this._actionPoint.geoLocation.longitude);
+          (<FormGroup>this.actionPointForm.controls['geoLocation'])
+            .controls['latitude']
+            .setValue(this._actionPoint.geoLocation.latitude);
         }
       });
   }

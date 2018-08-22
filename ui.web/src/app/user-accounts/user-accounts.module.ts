@@ -6,13 +6,16 @@ import { UserAccountDetailsComponent } from './user-account-details/user-account
 import { UserAccountsListComponent } from './user-accounts-list/user-accounts-list.component';
 import { UserService } from './user.service';
 import { UserAccountsResolverService } from './user-accounts-resolver.service';
-import { FormsModule } from '../../../node_modules/@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '../../../node_modules/@angular/forms';
+import { HttpModule } from '@angular/http';
+import { CanDeactivateGuard } from './can-deactivate-guard';
 @NgModule({
   imports: [
     CommonModule,
     UserAccountsRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule
   ],
   declarations: [
     UserAccountsHomeComponent,
@@ -20,7 +23,8 @@ import { FormsModule } from '../../../node_modules/@angular/forms';
     UserAccountsListComponent],
   providers: [
     UserService,
-    UserAccountsResolverService
+    UserAccountsResolverService,
+    CanDeactivateGuard
   ]
 })
 export class UserAccountsModule { }

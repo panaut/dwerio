@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalAccount } from '../../model';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
+import { FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-account-details',
@@ -14,18 +15,80 @@ export class UserAccountDetailsComponent implements OnInit {
     `\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*(\\d{1,2})$`;
 
   private _userAccount: PersonalAccount;
+  private _userForm: FormGroup;
+
+  private _showValidationErrors = false;
+  private _submitted = false;
+
+  public get canDeactivate(): boolean {
+    // return this.actionPointForm.pristine || this.actionPointForm.valid;
+    return !this._userForm.touched || this._submitted;
+  }
+
+  public set showValidationErrors(value: boolean) {
+    this._showValidationErrors = value;
+  }
+
+  public get showValidationErrors(): boolean {
+    return this._showValidationErrors;
+  }
+
+  public validationErrorClass(field: string): { [key: string]: boolean } {
+    const path: string[] = field.split('.');
+
+    let formCtrl: AbstractControl = this._userForm;
+
+    path.forEach((pathEl: string) => {
+      formCtrl = (<FormGroup>formCtrl).controls[pathEl];
+    });
+
+    const isInvalid: boolean = (this.showValidationErrors || !formCtrl.pristine) && !formCtrl.valid;
+
+    return { 'is-invalid': isInvalid };
+  }
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) {
+    this.phoneRequiredValidator = this.phoneRequiredValidator.bind(this);
 
-  ngOnInit() {
-    this.route.data.subscribe((data: { userAccount: PersonalAccount }) => {
-      this._userAccount = data.userAccount;
+
+    this._userForm = new FormGroup({
+      'username': new FormControl('', Validators.required),
+      'phoneNumber': new FormControl('', [this.phoneRequiredValidator, Validators.pattern(this.intPhoneNumberFormatExp)]),
+      'fullName': new FormControl(),
+      'activationMethods': new FormGroup({
+        'phoneCall': new FormControl(),
+        'sms': new FormControl(),
+        'web': new FormControl()
+      })
     });
   }
 
-  public goToList(): void {
+  ngOnInit() {
+    this.route.data.subscribe((data: { userAccount: PersonalAccount }) => {
+      if (data.userAccount) {
+        this._userAccount = data.userAccount;
+      } else {
+        this._userAccount = new PersonalAccount();
+      }
+
+      this._userForm.controls['username'].setValue(this._userAccount.username);
+      this._userForm.controls['phoneNumber'].setValue(this._userAccount.phoneNumber);
+      this._userForm.controls['fullName'].setValue(this._userAccount.fullName);
+
+    });
+  }
+
+  private phoneRequiredValidator(control: AbstractControl) {
+    if (this._userForm && (<FormGroup>this._userForm.controls['activationMethods']).controls['phoneCall'].value && !control.value) {
+      return { required: true };
+    }
+
+    return null;
+  }
+
+  public onSubmit(): void {
     this.router.navigate(['/usr']);
   }
 }

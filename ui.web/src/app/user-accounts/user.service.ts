@@ -1,48 +1,32 @@
 import { Injectable } from '@angular/core';
 import { PersonalAccount } from '../model';
 import { BehaviorSubject, Observable } from '../../../node_modules/rxjs';
+import { map } from 'rxjs/operators';
+import { Http, RequestOptions, Headers } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private readonly firebaseUrl = 'https://dwerio-2f645.firebaseio.com/';
   private _userAccounts: Array<PersonalAccount> = [];
 
   private _nextAccountId = 1;
   private _userAccounts$: BehaviorSubject<Array<PersonalAccount>>;
 
-  constructor() {
-    let pa = new PersonalAccount();
-    pa.id = this._nextAccountId++;
-    pa.username = 'panaut';
-    pa.fullName = 'Milivoj Panautovic';
-    pa.phoneNumber = '+381653211206';
+  constructor(private http: Http) {
+    const url = this.firebaseUrl + 'personalAccounts.json';
+    this.http.get(url)
+      .pipe(map((response: Response) => response.json()))
+      .subscribe((data: any) => {
+        const keys = Object.keys(data);
+        keys.forEach((key: string) => {
+          const pa: PersonalAccount = <PersonalAccount>data[key];
+          pa.id = +key;
 
-    this._userAccounts.push(pa);
-
-    pa = new PersonalAccount();
-    pa.id = this._nextAccountId++;
-    pa.username = 'gogi';
-    pa.fullName = 'Goran Bakoc';
-    pa.phoneNumber = '+38163270519';
-
-    this._userAccounts.push(pa);
-
-    pa = new PersonalAccount();
-    pa.id = this._nextAccountId++;
-    pa.username = 'sapke';
-    pa.fullName = 'Ivan Bulut';
-    pa.phoneNumber = '+381631027754';
-
-    this._userAccounts.push(pa);
-
-    pa = new PersonalAccount();
-    pa.id = this._nextAccountId++;
-    pa.username = 'shux';
-    pa.fullName = 'Ivan Susic';
-    pa.phoneNumber = '+381648552228';
-
-    this._userAccounts.push(pa);
+          this._userAccounts.push(pa);
+        });
+      });
 
     this._userAccounts$ = new BehaviorSubject<PersonalAccount[]>(this._userAccounts);
   }
@@ -80,5 +64,14 @@ export class UserService {
     this._userAccounts.splice(indexToDelete, 1);
 
     this._userAccounts$.next(this._userAccounts);
+  }
+
+  public save(): void {
+    // toDo: IC - check this, I think that id will cause problems...
+    const body: string = JSON.stringify(this._userAccounts);
+    const headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+    const url = this.firebaseUrl + 'personalAccounts.json';
+
+    this.http.post(url, body, { headers: headers });
   }
 }
