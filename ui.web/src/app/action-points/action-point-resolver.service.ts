@@ -11,7 +11,7 @@ export class ActionPointResolverService implements Resolve<ActionPoint> {
   public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): ActionPoint {
     const id: number = +route.paramMap.get('id');
 
-    if (id) {
+    if (!isNaN(id)) {
       return this.apSvc.getActionPoint(id);
     } else {
       // throw new Error('Route parameter ID not set');

@@ -12,7 +12,7 @@ export class UserService {
   private readonly firebaseUrl = 'https://dwerio-2f645.firebaseio.com/';
   private _userAccounts: Array<PersonalAccount> = [];
 
-  private _nextAccountId: number;
+  private _nextAccountId = 0;
   private _userAccounts$: BehaviorSubject<Array<PersonalAccount>> = new BehaviorSubject<PersonalAccount[]>(this._userAccounts);
 
   constructor(private http: Http) {
@@ -40,7 +40,7 @@ export class UserService {
       // This one is already updated - do nothing further...
     } else {
       // This one is suppose to be added
-      userAccount.id = ++this._nextAccountId;
+      userAccount.id = this._nextAccountId++;
 
       this._userAccounts.push(userAccount);
       this._userAccounts$.next(this._userAccounts);
@@ -61,12 +61,11 @@ export class UserService {
   }
 
   public save(): void {
-    // toDo: IC - check this, I think that id will cause problems...
     const body: string = JSON.stringify(this._userAccounts);
     const headers: Headers = new Headers({ 'Content-Type': 'application/json' });
     const url = this.firebaseUrl + 'personalAccounts.json';
 
-    this.http.post(url, body, { headers: headers });
+    this.http.put(url, body, { headers: headers }).toPromise().catch((err: Error) => console.log(err));
   }
 
   private loadResults(): Promise<void> {
@@ -81,15 +80,14 @@ export class UserService {
       .pipe(map((data: Response) => data.json()))
       .toPromise()
       .then((data: any) => {
-        const keys = Object.keys(data);
-        keys.forEach((key: string) => {
-          const pa: PersonalAccount = <PersonalAccount>data[key];
-          pa.id = +key;
+        data.forEach(element => {
+          const pa: PersonalAccount = <PersonalAccount>element;
+          if (pa) {
+            this._userAccounts.push(pa);
 
-          this._userAccounts.push(pa);
-
-          if (pa.id >= this._nextAccountId) {
-            this._nextAccountId = pa.id + 1;
+            if (pa.id >= this._nextAccountId) {
+              this._nextAccountId = pa.id + 1;
+            }
           }
         });
 

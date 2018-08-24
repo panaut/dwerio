@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-accounts-home',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserAccountsHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userSvc: UserService) { }
 
   ngOnInit() {
   }
 
+  public save(): void {
+    this.userSvc.save();
+  }
 }

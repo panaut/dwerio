@@ -1,8 +1,8 @@
 <ul class="items">
-  <ng-container *ngFor="let ap of actionPoints$ | async" [class.selected]="ap.id === selectedId">
+  <ng-container *ngFor="let ap of (actionPoints$ | async); let i = index" [class.selected]="ap.id === selectedId">
     <li>
       <a [routerLink]="[ap.id]">
-        <span class="badge">{{ ap.id }}</span>{{ ap.name }}
+        <span class="badge">{{ i + 1 }}</span>{{ ap.name }}
       </a>
       <i class="tail fa fa-trash" (click)="removeItem(ap.id)"></i>
     </li>

@@ -14,10 +14,10 @@ export class UserAccountsResolverService implements Resolve<PersonalAccount> {
   public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<PersonalAccount> {
     const id: number = +route.paramMap.get('id');
 
-    if (!id) {
-      throw new Error('Route parameter ID not set');
+    if (!isNaN(id)) {
+      return this.uaSvc.getUserAccount(id);
+    } else {
+      // throw new Error('Route parameter ID not set');
     }
-
-    return this.uaSvc.getUserAccount(id);
   }
 }
