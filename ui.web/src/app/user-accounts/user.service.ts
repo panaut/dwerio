@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PersonalAccount } from '../model';
-import { BehaviorSubject, Observable } from '../../../node_modules/rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from '../../../node_modules/rxjs';
+import { map, find } from 'rxjs/operators';
 import { Http, RequestOptions, Headers } from '@angular/http';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class UserService {
   private readonly firebaseUrl = 'https://dwerio-2f645.firebaseio.com/';
   private _userAccounts: Array<PersonalAccount> = [];
 
-  private _nextAccountId = 1;
-  private _userAccounts$: BehaviorSubject<Array<PersonalAccount>>;
+  private _nextAccountId: number;
+  private _userAccounts$: BehaviorSubject<Array<PersonalAccount>> = new BehaviorSubject<PersonalAccount[]>(this._userAccounts);
 
   constructor(private http: Http) {
     const url = this.firebaseUrl + 'personalAccounts.json';
@@ -25,32 +25,42 @@ export class UserService {
           pa.id = +key;
 
           this._userAccounts.push(pa);
-        });
-      });
 
-    this._userAccounts$ = new BehaviorSubject<PersonalAccount[]>(this._userAccounts);
+          if (pa.id >= this._nextAccountId) {
+            this._nextAccountId = pa.id + 1;
+          }
+        });
+
+        this._userAccounts$.next(this._userAccounts);
+      });
   }
 
   public getUserAccounts(): Observable<PersonalAccount[]> {
     return this._userAccounts$;
   }
 
-  public getUserAccount(id: number): PersonalAccount {
-    // return this._actionPoints$.pipe();
-    return this._userAccounts.find((pa: PersonalAccount) => pa.id === id);
+  public getUserAccount(id: number): Observable<PersonalAccount> {
+    return this._userAccounts$.pipe(map((accounts: PersonalAccount[]) => accounts.find((pa: PersonalAccount) => pa.id === id)));
   }
 
-  public addUserAccount(acc: PersonalAccount): void {
-    if (!acc.username) {
+  public saveUserAccount(userAccount: PersonalAccount): void {
+    if (!userAccount.username) {
       throw new Error('Username is mandatory');
     }
 
-    if (!acc.phoneNumber) {
+    if (!userAccount.phoneNumber) {
       throw new Error('Phone Number is mandatory');
     }
 
-    this._userAccounts.push(acc);
-    this._userAccounts$.next(this._userAccounts);
+    if (userAccount.id) {
+      // This one is already updated - do nothing further...
+    } else {
+      // This one is suppose to be added
+      userAccount.id = ++this._nextAccountId;
+
+      this._userAccounts.push(userAccount);
+      this._userAccounts$.next(this._userAccounts);
+    }
   }
 
   public removeUserAccount(id: number): void {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalAccount } from '../../model';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { UserService } from '../user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-account-details',
@@ -48,6 +50,7 @@ export class UserAccountDetailsComponent implements OnInit {
   }
 
   constructor(
+    private userSvc: UserService,
     private route: ActivatedRoute,
     private router: Router) {
     this.phoneRequiredValidator = this.phoneRequiredValidator.bind(this);
@@ -69,14 +72,13 @@ export class UserAccountDetailsComponent implements OnInit {
     this.route.data.subscribe((data: { userAccount: PersonalAccount }) => {
       if (data.userAccount) {
         this._userAccount = data.userAccount;
+
+        this._userForm.controls['username'].setValue(this._userAccount.username);
+        this._userForm.controls['phoneNumber'].setValue(this._userAccount.phoneNumber);
+        this._userForm.controls['fullName'].setValue(this._userAccount.fullName);
       } else {
         this._userAccount = new PersonalAccount();
       }
-
-      this._userForm.controls['username'].setValue(this._userAccount.username);
-      this._userForm.controls['phoneNumber'].setValue(this._userAccount.phoneNumber);
-      this._userForm.controls['fullName'].setValue(this._userAccount.fullName);
-
     });
   }
 
@@ -89,6 +91,13 @@ export class UserAccountDetailsComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    this._userAccount.username = this._userForm.controls['username'].value;
+    this._userAccount.phoneNumber = this._userForm.controls['phoneNumber'].value;
+    this._userAccount.fullName = this._userForm.controls['fullName'].value;
+
+    this.userSvc.saveUserAccount(this._userAccount);
+    this._submitted = true;
+
     this.router.navigate(['/usr']);
   }
 }
