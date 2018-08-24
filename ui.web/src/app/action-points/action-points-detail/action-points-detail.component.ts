@@ -23,8 +23,7 @@ export class ActionPointsDetailComponent implements OnInit {
   private _actionPoint: ActionPoint;
 
   public get canDeactivate(): boolean {
-    // return this.actionPointForm.pristine || this.actionPointForm.valid;
-    return !this.actionPointForm.touched || this._submitted;
+    return this.actionPointForm.pristine || this._submitted;
   }
 
   public set showValidationErrors(value: boolean) {

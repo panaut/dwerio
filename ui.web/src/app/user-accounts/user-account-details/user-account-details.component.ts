@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PersonalAccount } from '../../model';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
-import { FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { UserService } from '../user.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-account-details',
   templateUrl: './user-account-details.component.html',
   styleUrls: ['../../../../node_modules/bootstrap/dist/css/bootstrap.min.css']
 })
-export class UserAccountDetailsComponent implements OnInit {
+export class UserAccountDetailsComponent {
   private readonly intPhoneNumberFormatExp: string =
     `\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|3[875]\\d|2[98654321]\\d|9[8543210]|` +
     `8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)` +
@@ -24,7 +23,7 @@ export class UserAccountDetailsComponent implements OnInit {
 
   public get canDeactivate(): boolean {
     // return this.actionPointForm.pristine || this.actionPointForm.valid;
-    return !this._userForm.touched || this._submitted;
+    return this._userForm.pristine || this._submitted;
   }
 
   public set showValidationErrors(value: boolean) {
@@ -55,25 +54,19 @@ export class UserAccountDetailsComponent implements OnInit {
     private router: Router) {
     this.phoneRequiredValidator = this.phoneRequiredValidator.bind(this);
 
-
     this._userForm = new FormGroup({
       'username': new FormControl('', Validators.required),
-      'phoneNumber': new FormControl('', [this.phoneRequiredValidator, Validators.pattern(this.intPhoneNumberFormatExp)]),
+      'email': new FormControl('', [ Validators.required, Validators.email ]),
+      'phoneNumber': new FormControl('', [Validators.required, Validators.pattern(this.intPhoneNumberFormatExp) ]),
       'fullName': new FormControl(),
-      'activationMethods': new FormGroup({
-        'phoneCall': new FormControl(),
-        'sms': new FormControl(),
-        'web': new FormControl()
-      })
     });
-  }
 
-  ngOnInit() {
     this.route.data.subscribe((data: { userAccount: PersonalAccount }) => {
       if (data.userAccount) {
         this._userAccount = data.userAccount;
 
         this._userForm.controls['username'].setValue(this._userAccount.username);
+        this._userForm.controls['email'].setValue(this._userAccount.email);
         this._userForm.controls['phoneNumber'].setValue(this._userAccount.phoneNumber);
         this._userForm.controls['fullName'].setValue(this._userAccount.fullName);
       } else {
@@ -91,13 +84,16 @@ export class UserAccountDetailsComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    this._userAccount.username = this._userForm.controls['username'].value;
-    this._userAccount.phoneNumber = this._userForm.controls['phoneNumber'].value;
-    this._userAccount.fullName = this._userForm.controls['fullName'].value;
+    if (this._userForm.valid) {
+      this._userAccount.username = this._userForm.controls['username'].value;
+      this._userAccount.email = this._userForm.controls['email'].value;
+      this._userAccount.phoneNumber = this._userForm.controls['phoneNumber'].value;
+      this._userAccount.fullName = this._userForm.controls['fullName'].value;
 
-    this.userSvc.saveUserAccount(this._userAccount);
-    this._submitted = true;
+      this.userSvc.saveUserAccount(this._userAccount);
+      this._submitted = true;
 
-    this.router.navigate(['/usr']);
+      this.router.navigate(['/usr']);
+    }
   }
 }

@@ -3,6 +3,7 @@ import { PersonalAccount } from '../model';
 import { BehaviorSubject, Observable, of } from '../../../node_modules/rxjs';
 import { map, find } from 'rxjs/operators';
 import { Http, RequestOptions, Headers } from '@angular/http';
+import { resolve } from 'dns';
 
 @Injectable({
   providedIn: 'root'
@@ -15,32 +16,15 @@ export class UserService {
   private _userAccounts$: BehaviorSubject<Array<PersonalAccount>> = new BehaviorSubject<PersonalAccount[]>(this._userAccounts);
 
   constructor(private http: Http) {
-    const url = this.firebaseUrl + 'personalAccounts.json';
-    this.http.get(url)
-      .pipe(map((response: Response) => response.json()))
-      .subscribe((data: any) => {
-        const keys = Object.keys(data);
-        keys.forEach((key: string) => {
-          const pa: PersonalAccount = <PersonalAccount>data[key];
-          pa.id = +key;
-
-          this._userAccounts.push(pa);
-
-          if (pa.id >= this._nextAccountId) {
-            this._nextAccountId = pa.id + 1;
-          }
-        });
-
-        this._userAccounts$.next(this._userAccounts);
-      });
   }
 
   public getUserAccounts(): Observable<PersonalAccount[]> {
+    this.loadResults();
     return this._userAccounts$;
   }
 
-  public getUserAccount(id: number): Observable<PersonalAccount> {
-    return this._userAccounts$.pipe(map((accounts: PersonalAccount[]) => accounts.find((pa: PersonalAccount) => pa.id === id)));
+  public getUserAccount(id: number): Promise<PersonalAccount> {
+    return this.loadResults().then(() => this._userAccounts.find((pa: PersonalAccount) => pa.id === id));
   }
 
   public saveUserAccount(userAccount: PersonalAccount): void {
@@ -83,5 +67,33 @@ export class UserService {
     const url = this.firebaseUrl + 'personalAccounts.json';
 
     this.http.post(url, body, { headers: headers });
+  }
+
+  private loadResults(): Promise<void> {
+    if (this._userAccounts && this._userAccounts.length > 0) {
+      // We already loaded collection from the firebase.
+      return new Promise((res: Function, rej: Function) => res(this._userAccounts));
+    }
+
+    // Load it from Fireabase
+    const url = this.firebaseUrl + 'personalAccounts.json';
+    return this.http.get(url)
+      .pipe(map((data: Response) => data.json()))
+      .toPromise()
+      .then((data: any) => {
+        const keys = Object.keys(data);
+        keys.forEach((key: string) => {
+          const pa: PersonalAccount = <PersonalAccount>data[key];
+          pa.id = +key;
+
+          this._userAccounts.push(pa);
+
+          if (pa.id >= this._nextAccountId) {
+            this._nextAccountId = pa.id + 1;
+          }
+        });
+
+        this._userAccounts$.next(this._userAccounts);
+      });
   }
 }
