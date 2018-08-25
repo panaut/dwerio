@@ -1,12 +1,34 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    {{ title }}
-  </h1>
+<!-- A grey horizontal navbar that becomes vertical on small screens -->
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">dwerion</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-  <img width="100" alt="dwerion logo" src="assets/images/pibot.jpg">
-  
-  <div class="container">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class='nav-link' routerLink='/ap' routerLinkActive="active">Action Points</a> </li>
+      <li class="nav-item">
+        <a class='nav-link' routerLink='/usr' routerLinkActive="active">User Accounts</a>
+      </li>
+      <li class="nav-item">
+        <a class='nav-link' routerLink='/asdf' routerLinkActive="active">Permissions</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="dwerion-root">
+  <!--The content below is only a placeholder and can be replaced.-->
+  <div style="text-align:center">
+    <h1>
+      {{ title }}
+    </h1>
+
+    <img width="100" alt="dwerion logo" src="assets/images/pibot.jpg">
+
     <div class="row">
       <h3>
         "Knock, and it shall be opened unto you"
@@ -18,9 +40,6 @@
       </div>
     </div>
   </div>
+
+  <router-outlet></router-outlet>
 </div>
-<nav>
-  <a routerLink='/ap' routerLinkActive="active">Action Points</a>
-  <a routerLink='/usr' routerLinkActive="active">Users</a>
-</nav>
-<router-outlet></router-outlet>
