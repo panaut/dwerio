@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActionPointsService } from '../action-points.service';
 
 @Component({
   selector: 'app-action-points-home',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActionPointsHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private apSvc: ActionPointsService) { }
 
   ngOnInit() {
   }
 
+  public save(): void {
+    this.apSvc.save();
+  }
 }

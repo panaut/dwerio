@@ -19,12 +19,12 @@ export class UserService {
   }
 
   public getUserAccounts(): Observable<PersonalAccount[]> {
-    this.loadResults();
+    this.getData();
     return this._userAccounts$;
   }
 
   public getUserAccount(id: number): Promise<PersonalAccount> {
-    return this.loadResults().then(() => this._userAccounts.find((pa: PersonalAccount) => pa.id === id));
+    return this.getData().then(() => this._userAccounts.find((pa: PersonalAccount) => pa.id === id));
   }
 
   public saveUserAccount(userAccount: PersonalAccount): void {
@@ -36,7 +36,7 @@ export class UserService {
       throw new Error('Phone Number is mandatory');
     }
 
-    if (userAccount.id) {
+    if (!isNaN(userAccount.id)) {
       // This one is already updated - do nothing further...
     } else {
       // This one is suppose to be added
@@ -68,7 +68,7 @@ export class UserService {
     this.http.put(url, body, { headers: headers }).toPromise().catch((err: Error) => console.log(err));
   }
 
-  private loadResults(): Promise<void> {
+  private getData(): Promise<void> {
     if (this._userAccounts && this._userAccounts.length > 0) {
       // We already loaded collection from the firebase.
       return new Promise((res: Function, rej: Function) => res(this._userAccounts));
@@ -76,10 +76,15 @@ export class UserService {
 
     // Load it from Fireabase
     const url = this.firebaseUrl + 'personalAccounts.json';
+    this._userAccounts.length = 0;
     return this.http.get(url)
       .pipe(map((data: Response) => data.json()))
       .toPromise()
       .then((data: any) => {
+        if (!data || data.length === 0) {
+          return;
+        }
+
         data.forEach(element => {
           const pa: PersonalAccount = <PersonalAccount>element;
           if (pa) {

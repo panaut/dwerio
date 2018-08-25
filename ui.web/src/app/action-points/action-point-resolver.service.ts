@@ -8,7 +8,7 @@ export class ActionPointResolverService implements Resolve<ActionPoint> {
 
   constructor(private apSvc: ActionPointsService) { }
 
-  public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): ActionPoint {
+  public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<ActionPoint> {
     const id: number = +route.paramMap.get('id');
 
     if (!isNaN(id)) {
