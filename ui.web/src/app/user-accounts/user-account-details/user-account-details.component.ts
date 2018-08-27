@@ -56,8 +56,8 @@ export class UserAccountDetailsComponent {
 
     this._userForm = new FormGroup({
       'username': new FormControl('', Validators.required),
-      'email': new FormControl('', [ Validators.required, Validators.email ]),
-      'phoneNumber': new FormControl('', [Validators.required, Validators.pattern(this.intPhoneNumberFormatExp) ]),
+      'email': new FormControl('', [Validators.required, Validators.email]),
+      'phoneNumber': new FormControl('', [Validators.required, Validators.pattern(this.intPhoneNumberFormatExp)]),
       'fullName': new FormControl(),
     });
 
@@ -93,7 +93,7 @@ export class UserAccountDetailsComponent {
       this.userSvc.saveUserAccount(this._userAccount);
       this._submitted = true;
 
-      this.router.navigate(['/usr']);
+      this.router.navigate(['/usr', { selectedId: this._userAccount.id }]);
     }
   }
 }

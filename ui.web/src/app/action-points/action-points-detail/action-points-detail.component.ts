@@ -191,7 +191,7 @@ export class ActionPointsDetailComponent implements OnInit {
 
       this._submitted = true;
 
-      this.router.navigate(['/ap']);
+      this.router.navigate(['/ap', { selectedId: this._actionPoint.id }]);
     }
   }
 }

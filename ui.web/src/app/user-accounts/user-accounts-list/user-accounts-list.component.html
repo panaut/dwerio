@@ -1,10 +1,10 @@
 <ul class="items">
-    <li *ngFor="let ua of (_userAccounts$ | async); let i = index" [class.selected]="ua.id === selectedId">
-      <a [routerLink]="[ua.id]">
-        <span class="badge">{{ i + 1 }}</span>{{ ua.username }}
-      </a>
-      <i class="tail fa fa-trash" (click)="removeItem(ua.id)"></i>
-    </li>
-  </ul>
+  <li *ngFor="let ua of (_userAccounts$ | async); let i = index" [class.selected]="ua.id === selectedId">
+    <a [routerLink]="['/usr', ua.id]">
+      <span class="badge">{{ i + 1 }}</span>{{ ua.username }}
+    </a>
+    <i class="tail fa fa-trash" (click)="removeItem(ua.id)"></i>
+  </li>
+</ul>
 
-  <button class="btn btn-default" (click)="addNewUser()">Add new User Account...</button>
+<button class="btn btn-default" (click)="addNewUser()">Add new User Account...</button>
