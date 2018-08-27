@@ -19,10 +19,11 @@ export class UserAccountsListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) {
 
-    const selectedId$ = this.route.paramMap.pipe(switchMap((params: ParamMap) => params.get('selectedId')));
-    if (selectedId$) {
-      selectedId$.subscribe((value: string) => this.selectedId = +value);
-    }
+    const selectedId$: Observable<string> = this.route.paramMap.pipe(switchMap((params: ParamMap) => {
+      const sId: string = params.get('selectedId');
+      if (sId) { return sId; } else { return 'NaN'; }
+    }));
+    selectedId$.subscribe((value: string) => { if (!isNaN(+value)) { this.selectedId = +value; } });
   }
 
   ngOnInit() {
