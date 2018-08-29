@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionPointsService } from '../action-points.service';
+import { ActionPointsService } from '../../data-service';
 
 @Component({
   selector: 'app-action-points-home',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActionPoint, Address, GeoCoordinates } from '../model';
-import { BehaviorSubject, Observable } from '../../../node_modules/rxjs';
+import { ActionPoint } from '../model';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Http, Headers } from '@angular/http';
 import { map } from 'rxjs/operators';
 

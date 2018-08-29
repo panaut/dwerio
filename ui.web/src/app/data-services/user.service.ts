@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PersonalAccount } from '../model';
-import { BehaviorSubject, Observable, of } from '../../../node_modules/rxjs';
-import { map, find } from 'rxjs/operators';
-import { Http, RequestOptions, Headers } from '@angular/http';
-import { resolve } from 'dns';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Http, Headers } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'

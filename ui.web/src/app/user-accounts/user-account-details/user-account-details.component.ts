@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PersonalAccount } from '../../model';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { UserService } from '../user.service';
+import { UserService } from '../../data-services';
 
 @Component({
   selector: 'app-user-account-details',

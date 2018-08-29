@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '../../../node_modules/@angular/router';
 import { PersonalAccount } from '../model';
-import { UserService } from './user.service';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { EventEmitter } from 'protractor';
+import { UserService } from '../data-services';
 
 @Injectable({
   providedIn: 'root'

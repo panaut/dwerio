@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '../../../node_modules/@angular/router';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '../../../node_modules/@angular/router';
 import { ActionPoint } from '../model';
-import { ActionPointsService } from './action-points.service';
+import { ActionPointsService } from '../data-services';
 
 @Injectable()
 export class ActionPointResolverService implements Resolve<ActionPoint> {

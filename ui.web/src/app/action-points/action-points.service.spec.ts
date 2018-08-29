@@ -1,6 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-
-import { ActionPointsService } from './action-points.service';
+import { ActionPointsService } from '../data-services';
 
 describe('ActionPointsService', () => {
   beforeEach(() => {

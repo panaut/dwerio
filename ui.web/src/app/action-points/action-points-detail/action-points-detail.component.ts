@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ActivatedRoute,
   Router
 } from '../../../../node_modules/@angular/router';
 import { ActionPoint, GeoCoordinates, Address } from '../../model';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { ActionPointsService } from '../action-points.service';
+import { ActionPointsService } from '../../data-services';
 
 @Component({
   selector: 'app-action-points-detail',

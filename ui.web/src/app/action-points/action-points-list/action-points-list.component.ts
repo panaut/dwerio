@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionPointsService } from '../action-points.service';
+import { ActionPointsService } from '../../data-services';
 import { Observable } from '../../../../node_modules/rxjs';
 import { ActionPoint } from '../../model';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
