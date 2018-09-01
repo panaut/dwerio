@@ -11,7 +11,7 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
   styleUrls: ['../../../../node_modules/font-awesome/css/font-awesome.css']
 })
 export class ActionPointsListComponent implements OnInit {
-  private actionPoints$: Observable<ActionPoint[]>;
+  actionPoints$: Observable<ActionPoint[]>;
   private selectedId: number;
 
   constructor(

@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
 })
 export class UserAccountsListComponent implements OnInit {
   private selectedId: number;
-  private _userAccounts$: Observable<PersonalAccount[]>;
+  _userAccounts$: Observable<PersonalAccount[]>;
 
   constructor(
     private uaSvc: UserService,

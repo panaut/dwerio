@@ -13,10 +13,10 @@ import { ActionPointsService } from '../../data-services';
   styleUrls: ['../../../../node_modules/bootstrap/dist/css/bootstrap.min.css']
 })
 export class ActionPointsDetailComponent implements OnInit {
-  private actionPointForm: FormGroup;
+  actionPointForm: FormGroup;
 
   private _useAddress = false;
-  private _useGeoLocation = false;
+  _useGeoLocation = false;
   private _showValidationErrors = false;
   private _submitted = false;
 
@@ -114,7 +114,7 @@ export class ActionPointsDetailComponent implements OnInit {
       });
   }
 
-  private toggleAddress(): void {
+  toggleAddress(): void {
     this._useAddress = !this._useAddress;
 
     (<FormGroup>this.actionPointForm.controls['address'])
@@ -131,7 +131,7 @@ export class ActionPointsDetailComponent implements OnInit {
       .updateValueAndValidity({ onlySelf: false, emitEvent: false });
   }
 
-  private toggleLocation(): void {
+  toggleLocation(): void {
     this._useGeoLocation = !this._useGeoLocation;
 
     (<FormGroup>this.actionPointForm.controls['geoLocation'])

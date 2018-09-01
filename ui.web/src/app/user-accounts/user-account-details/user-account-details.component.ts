@@ -16,7 +16,7 @@ export class UserAccountDetailsComponent {
     `\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*\\d\\W*(\\d{1,2})$`;
 
   private _userAccount: PersonalAccount;
-  private _userForm: FormGroup;
+  _userForm: FormGroup;
 
   private _showValidationErrors = false;
   private _submitted = false;
