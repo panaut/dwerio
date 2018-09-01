@@ -15,7 +15,7 @@ import { ActionPointsService } from '../../data-services';
 export class ActionPointsDetailComponent implements OnInit {
   actionPointForm: FormGroup;
 
-  private _useAddress = false;
+  _useAddress = false;
   _useGeoLocation = false;
   private _showValidationErrors = false;
   private _submitted = false;
