@@ -7,15 +7,13 @@ import { ActionPointsListComponent } from './action-points-list/action-points-li
 import { ActionPointResolverService } from './action-point-resolver.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CanDeactivateGuard } from './can-deactivate-guard';
-import { HttpModule } from '@angular/http';
 
 @NgModule({
   imports: [
     CommonModule,
     ActionPointsRouterModule,
     FormsModule,
-    ReactiveFormsModule,
-    HttpModule
+    ReactiveFormsModule
   ],
   declarations: [
     ActionPointsHomeComponent,

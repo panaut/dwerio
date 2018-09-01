@@ -6,7 +6,6 @@ import { UserAccountDetailsComponent } from './user-account-details/user-account
 import { UserAccountsListComponent } from './user-accounts-list/user-accounts-list.component';
 import { UserAccountsResolverService } from './user-accounts-resolver.service';
 import { FormsModule, ReactiveFormsModule } from '../../../node_modules/@angular/forms';
-import { HttpModule } from '@angular/http';
 import { CanDeactivateGuard } from './can-deactivate-guard';
 
 @NgModule({
@@ -14,8 +13,7 @@ import { CanDeactivateGuard } from './can-deactivate-guard';
     CommonModule,
     UserAccountsRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
-    HttpModule
+    ReactiveFormsModule
   ],
   declarations: [
     UserAccountsHomeComponent,

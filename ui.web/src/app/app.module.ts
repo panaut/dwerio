@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ActionPointsService, UserService } from './data-services';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { ActionPointsService, UserService } from './data-services';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpModule
   ],
   providers: [
     ActionPointsService,
