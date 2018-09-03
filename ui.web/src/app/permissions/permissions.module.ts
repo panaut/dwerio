@@ -9,6 +9,8 @@ import { OverviewComponent } from './overview/overview.component';
     CommonModule,
     PermisionsRoutingModule
   ],
-  declarations: [OverviewComponent]
+  declarations: [
+    OverviewComponent
+  ]
 })
 export class PermissionsModule { }
